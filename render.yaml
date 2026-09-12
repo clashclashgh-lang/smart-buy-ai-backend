@@ -2,5 +2,5 @@ services:
   - type: web
     name: smart-buy-ai-backend
     env: node
-    buildCommand: npm install && npx playwright install chromium
+    buildCommand: npm install && npx playwright install --with-deps chromium
     startCommand: npm start

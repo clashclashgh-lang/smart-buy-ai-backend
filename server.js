@@ -10,37 +10,38 @@ app.get("/", (req,res)=>{
 
 app.post("/analyze", async (req,res)=>{
   const { url } = req.body;
-
   let browser;
 
   try {
-    browser = await chromium.launch({headless:true});
+    browser = await chromium.launch({
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"]
+    });
+
     const page = await browser.newPage();
-
-    await page.goto(url, {waitUntil:"domcontentloaded", timeout:30000});
-
-    const title = await page.title();
+    await page.goto(url, {
+      waitUntil: "domcontentloaded",
+      timeout: 30000
+    });
 
     res.json({
-      source:"divar",
-      status:"extraction_started",
-      data:{
-        title,
-        price:null,
-        city:null,
-        description:null,
-        score:null,
-        recommendation:null
+      source: "divar",
+      status: "page_opened",
+      data: {
+        title: await page.title(),
+        price: null,
+        city: null,
+        score: null
       }
     });
 
-  } catch(error) {
+  } catch (error) {
     res.status(500).json({
-      error:"extract_failed",
-      message:error.message
+      error: "extract_failed",
+      message: error.message
     });
   } finally {
-    if(browser) await browser.close();
+    if (browser) await browser.close();
   }
 });
 

@@ -1,5 +1,5 @@
 {
-  "name": "smart-buy-ai-playwright",
+  "name": "smart-buy-ai-backend",
   "version": "1.0.0",
   "scripts": {
     "start": "node server.js"
